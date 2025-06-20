@@ -1,0 +1,13 @@
+[project]
+name = "testmcp-fastmcp"
+version = "0.1.0"
+dependencies = [
+    "fastmcp>=2.8.1",
+]
+
+[tool.uv]
+virtualenvs.in-project = true
+
+dependencies = [
+  "fastmcp"
+]
