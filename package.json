@@ -1,0 +1,12 @@
+{
+  "name": "testmcp",
+  "version": "1.0.0",
+  "description": "make MCP server for Test by modelcontextprotocol & fastmcp",
+  "main": "",
+  "scripts": {
+    "inspect:fastmcp": "npx @modelcontextprotocol/inspector ./fastMCP/.venv/bin/python3 ./fastMCP/server.py",
+    "inspect:modelcontextprotocol": "npx @modelcontextprotocol/inspector node ./modelcontextprotocol/build/index.js"
+  },
+  "author": "YongRok",
+  "license": "ISC"
+}
