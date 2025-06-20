@@ -38,30 +38,28 @@ def format_alert(feature: dict) -> str:
     )
 
 
-@mcp.tool(name="get-alerts-fastmcp", description="Two-letter state code (e.g. CA, NY)")
-async def get_alerts_fastmcp(state: str) -> dict:
+@mcp.tool
+async def get_alerts_fastMCP(state: str) -> dict:
+    """Get weather alerts for a given US state (e.g. CA, NY)."""
+
+    state = state.upper()
     print(f"✅ get-alerts-fastmcp with state = {state}")
-    state_code = state.upper()
-    alerts_url = f"{NWS_API_BASE}/alerts?area={state_code}"
-    alerts_data = await make_nws_request(alerts_url)
 
-    if not alerts_data:
-        return {"content": [{"type": "text", "text": "Failed to retrieve alerts data"}]}
+    url = f"{NWS_API_BASE}/alerts?area={state}"
+    data = await make_nws_request(url)
+    features = data.get("features", []) if data else []
 
-    features = alerts_data.get("features", [])
     if not features:
-        return {
-            "content": [{"type": "text", "text": f"No active alerts for {state_code}"}]
-        }
+        msg = (
+            f"No active alerts for {state}"
+            if data
+            else "Failed to retrieve alerts data"
+        )
+        return {"content": [{"type": "text", "text": msg}]}
 
-    formatted = [format_alert(f) for f in features]
+    alerts = "\n".join(format_alert(f) for f in features)
     return {
-        "content": [
-            {
-                "type": "text",
-                "text": f"Active alerts for {state_code}:\n\n" + "\n".join(formatted),
-            }
-        ]
+        "content": [{"type": "text", "text": f"Active alerts for {state}:\n\n{alerts}"}]
     }
 
 
